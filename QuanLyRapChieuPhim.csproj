@@ -12,7 +12,6 @@
     <Folder Include="DAL\" />
     <Folder Include="BUS\" />
     <Folder Include="DTO\" />
-    <Folder Include="GUI\" />
   </ItemGroup>
 
 </Project>
