@@ -1,0 +1,11 @@
+CREATE DATABASE CinemaDB;
+GO
+USE CinemaDB;
+GO
+CREATE TABLE TaiKhoan(
+ TenDangNhap VARCHAR(50) PRIMARY KEY,
+ MatKhau VARCHAR(100) NOT NULL,
+ Quyen NVARCHAR(20) NOT NULL DEFAULT N'KhachHang' CHECK (Quyen IN(N'KhachHang',N'Admin')),
+ TrangThai BIT NOT NULL DEFAULT 1
+);
+GO
