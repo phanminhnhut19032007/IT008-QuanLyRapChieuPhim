@@ -80,6 +80,7 @@
             btnDangNhap.TabIndex = 11;
             btnDangNhap.Text = "Đăng nhập";
             btnDangNhap.UseVisualStyleBackColor = true;
+            btnDangNhap.Click += this.btnDangNhap_Click;
             // 
             // btnHuy
             // 
