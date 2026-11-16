@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace QuanLyRapChieuPhim.GUI
 {
-    public static class UIFrmDangNhap
+    public static class UIUX
     {
         //  Cắt bo tròn góc chữ nhật cho bất kỳ Control nào
         public static void BoGocControl(Control control, int radius)

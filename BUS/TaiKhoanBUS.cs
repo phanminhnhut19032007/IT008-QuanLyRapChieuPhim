@@ -7,7 +7,7 @@ namespace QuanLyRapChieuPhim.BUS
 {
     public class TaiKhoanBUS
     {
-        private static TaiKhoanBUS ? instance;
+        private static TaiKhoanBUS instance;
         public static TaiKhoanBUS Instance
         {
             get { if (instance == null) instance = new TaiKhoanBUS(); return instance; }

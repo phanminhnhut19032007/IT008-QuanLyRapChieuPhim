@@ -33,12 +33,12 @@
             btnDangNhap = new Button();
             btnHuy = new Button();
             picGif = new PictureBox();
-            linklb2 = new LinkLabel();
-            linklb1 = new LinkLabel();
+            llbQuenMatKhau = new LinkLabel();
+            llbTaoTaiKhoan = new LinkLabel();
             tb2 = new TextBox();
             tb1 = new TextBox();
-            rdBtn2 = new RadioButton();
-            rdBtn1 = new RadioButton();
+            rdbtn2 = new RadioButton();
+            rdbtn1 = new RadioButton();
             lb3 = new Label();
             lb2 = new Label();
             lb1 = new Label();
@@ -54,12 +54,12 @@
             pblDangNhap.Controls.Add(btnDangNhap);
             pblDangNhap.Controls.Add(btnHuy);
             pblDangNhap.Controls.Add(picGif);
-            pblDangNhap.Controls.Add(linklb2);
-            pblDangNhap.Controls.Add(linklb1);
+            pblDangNhap.Controls.Add(llbQuenMatKhau);
+            pblDangNhap.Controls.Add(llbTaoTaiKhoan);
             pblDangNhap.Controls.Add(tb2);
             pblDangNhap.Controls.Add(tb1);
-            pblDangNhap.Controls.Add(rdBtn2);
-            pblDangNhap.Controls.Add(rdBtn1);
+            pblDangNhap.Controls.Add(rdbtn2);
+            pblDangNhap.Controls.Add(rdbtn1);
             pblDangNhap.Controls.Add(lb3);
             pblDangNhap.Controls.Add(lb2);
             pblDangNhap.Controls.Add(lb1);
@@ -67,7 +67,7 @@
             pblDangNhap.ForeColor = SystemColors.ActiveCaption;
             pblDangNhap.Location = new Point(0, 0);
             pblDangNhap.Name = "pblDangNhap";
-            pblDangNhap.Size = new Size(453, 533);
+            pblDangNhap.Size = new Size(478, 533);
             pblDangNhap.TabIndex = 0;
             // 
             // btnDangNhap
@@ -80,7 +80,7 @@
             btnDangNhap.TabIndex = 11;
             btnDangNhap.Text = "Đăng nhập";
             btnDangNhap.UseVisualStyleBackColor = true;
-            btnDangNhap.Click += this.btnDangNhap_Click;
+            btnDangNhap.Click += btnDangNhap_Click;
             // 
             // btnHuy
             // 
@@ -91,44 +91,46 @@
             btnHuy.TabIndex = 10;
             btnHuy.Text = "Hủy";
             btnHuy.UseVisualStyleBackColor = true;
+            btnHuy.Click += btnHuy_Click;
             // 
             // picGif
             // 
             picGif.BackColor = Color.Black;
             picGif.BackgroundImageLayout = ImageLayout.Stretch;
             picGif.Image = (Image)resources.GetObject("picGif.Image");
-            picGif.Location = new Point(95, 23);
+            picGif.Location = new Point(102, 23);
             picGif.Name = "picGif";
-            picGif.Size = new Size(269, 266);
+            picGif.Size = new Size(250, 250);
             picGif.SizeMode = PictureBoxSizeMode.StretchImage;
             picGif.TabIndex = 9;
             picGif.TabStop = false;
             // 
-            // linklb2
+            // llbQuenMatKhau
             // 
-            linklb2.ActiveLinkColor = Color.SkyBlue;
-            linklb2.AutoSize = true;
-            linklb2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            linklb2.ImageAlign = ContentAlignment.MiddleLeft;
-            linklb2.Location = new Point(147, 473);
-            linklb2.Name = "linklb2";
-            linklb2.Size = new Size(145, 28);
-            linklb2.TabIndex = 8;
-            linklb2.TabStop = true;
-            linklb2.Text = "Quên mật khẩu";
+            llbQuenMatKhau.ActiveLinkColor = Color.SkyBlue;
+            llbQuenMatKhau.AutoSize = true;
+            llbQuenMatKhau.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            llbQuenMatKhau.ImageAlign = ContentAlignment.MiddleLeft;
+            llbQuenMatKhau.Location = new Point(147, 473);
+            llbQuenMatKhau.Name = "llbQuenMatKhau";
+            llbQuenMatKhau.Size = new Size(145, 28);
+            llbQuenMatKhau.TabIndex = 8;
+            llbQuenMatKhau.TabStop = true;
+            llbQuenMatKhau.Text = "Quên mật khẩu";
             // 
-            // linklb1
+            // llbTaoTaiKhoan
             // 
-            linklb1.ActiveLinkColor = Color.SkyBlue;
-            linklb1.AutoSize = true;
-            linklb1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            linklb1.ImageAlign = ContentAlignment.MiddleLeft;
-            linklb1.Location = new Point(307, 473);
-            linklb1.Name = "linklb1";
-            linklb1.Size = new Size(135, 28);
-            linklb1.TabIndex = 7;
-            linklb1.TabStop = true;
-            linklb1.Text = "Tạo tài khoản ";
+            llbTaoTaiKhoan.ActiveLinkColor = Color.SkyBlue;
+            llbTaoTaiKhoan.AutoSize = true;
+            llbTaoTaiKhoan.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            llbTaoTaiKhoan.ImageAlign = ContentAlignment.MiddleLeft;
+            llbTaoTaiKhoan.Location = new Point(307, 473);
+            llbTaoTaiKhoan.Name = "llbTaoTaiKhoan";
+            llbTaoTaiKhoan.Size = new Size(135, 28);
+            llbTaoTaiKhoan.TabIndex = 7;
+            llbTaoTaiKhoan.TabStop = true;
+            llbTaoTaiKhoan.Text = "Tạo tài khoản ";
+            llbTaoTaiKhoan.LinkClicked += llbTaoTaiKhoan_LinkClicked;
             // 
             // tb2
             // 
@@ -146,43 +148,43 @@
             tb1.Size = new Size(300, 31);
             tb1.TabIndex = 5;
             // 
-            // rdBtn2
+            // rdbtn2
             // 
-            rdBtn2.AutoSize = true;
-            rdBtn2.BackColor = Color.Transparent;
-            rdBtn2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            rdBtn2.ForeColor = SystemColors.ActiveCaptionText;
-            rdBtn2.Location = new Point(278, 397);
-            rdBtn2.Name = "rdBtn2";
-            rdBtn2.Size = new Size(94, 29);
-            rdBtn2.TabIndex = 4;
-            rdBtn2.TabStop = true;
-            rdBtn2.Text = "Quản lý";
-            rdBtn2.UseVisualStyleBackColor = false;
+            rdbtn2.AutoSize = true;
+            rdbtn2.BackColor = Color.Transparent;
+            rdbtn2.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rdbtn2.ForeColor = SystemColors.ActiveCaptionText;
+            rdbtn2.Location = new Point(278, 397);
+            rdbtn2.Name = "rdbtn2";
+            rdbtn2.Size = new Size(97, 29);
+            rdbtn2.TabIndex = 4;
+            rdbtn2.TabStop = true;
+            rdbtn2.Text = "Quản lý";
+            rdbtn2.UseVisualStyleBackColor = false;
             // 
-            // rdBtn1
+            // rdbtn1
             // 
-            rdBtn1.AutoSize = true;
-            rdBtn1.BackColor = Color.Transparent;
-            rdBtn1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            rdBtn1.ForeColor = SystemColors.ActiveCaptionText;
-            rdBtn1.Location = new Point(142, 395);
-            rdBtn1.Name = "rdBtn1";
-            rdBtn1.Size = new Size(130, 29);
-            rdBtn1.TabIndex = 3;
-            rdBtn1.TabStop = true;
-            rdBtn1.Text = "Khách hàng ";
-            rdBtn1.UseVisualStyleBackColor = false;
+            rdbtn1.AutoSize = true;
+            rdbtn1.BackColor = Color.Transparent;
+            rdbtn1.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rdbtn1.ForeColor = SystemColors.ActiveCaptionText;
+            rdbtn1.Location = new Point(142, 395);
+            rdbtn1.Name = "rdbtn1";
+            rdbtn1.Size = new Size(132, 29);
+            rdbtn1.TabIndex = 3;
+            rdbtn1.TabStop = true;
+            rdbtn1.Text = "Khách hàng ";
+            rdbtn1.UseVisualStyleBackColor = false;
             // 
             // lb3
             // 
             lb3.AutoSize = true;
             lb3.BackColor = Color.Transparent;
-            lb3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lb3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lb3.ForeColor = SystemColors.ActiveCaptionText;
             lb3.Location = new Point(55, 396);
             lb3.Name = "lb3";
-            lb3.Size = new Size(69, 28);
+            lb3.Size = new Size(74, 28);
             lb3.TabIndex = 2;
             lb3.Text = "Vai trò";
             // 
@@ -190,11 +192,11 @@
             // 
             lb2.AutoSize = true;
             lb2.BackColor = Color.Transparent;
-            lb2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lb2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lb2.ForeColor = SystemColors.ActiveCaptionText;
-            lb2.Location = new Point(39, 349);
+            lb2.Location = new Point(38, 349);
             lb2.Name = "lb2";
-            lb2.Size = new Size(99, 28);
+            lb2.Size = new Size(108, 28);
             lb2.TabIndex = 1;
             lb2.Text = "Mật khẩu ";
             // 
@@ -202,11 +204,11 @@
             // 
             lb1.AutoSize = true;
             lb1.BackColor = Color.Transparent;
-            lb1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lb1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lb1.ForeColor = SystemColors.ActiveCaptionText;
-            lb1.Location = new Point(12, 301);
+            lb1.Location = new Point(0, 301);
             lb1.Name = "lb1";
-            lb1.Size = new Size(132, 28);
+            lb1.Size = new Size(146, 28);
             lb1.TabIndex = 0;
             lb1.Text = "Tên tài khoản ";
             // 
@@ -235,12 +237,12 @@
         private Label lb1;
         private Label lb3;
         private Label lb2;
-        private RadioButton rdBtn2;
-        private RadioButton rdBtn1;
+        private RadioButton rdbtn2;
+        private RadioButton rdbtn1;
         private TextBox tb1;
         private TextBox tb2;
-        private LinkLabel linklb2;
-        private LinkLabel linklb1;
+        private LinkLabel llbQuenMatKhau;
+        private LinkLabel llbTaoTaiKhoan;
         private PictureBox picGif;
         private Button btnDangNhap;
         private Button btnHuy;

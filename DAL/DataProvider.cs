@@ -7,7 +7,7 @@ namespace QuanLyRapChieuPhim.DAL
 {
     public class DataProvider
     {
-        private static DataProvider? instance;
+        private static DataProvider instance;
         public static DataProvider Instance
         {
             get { if (instance == null) instance = new DataProvider(); return instance; }
@@ -18,7 +18,7 @@ namespace QuanLyRapChieuPhim.DAL
 
         private DataProvider() { }
 
-        public DataTable ExecuteQuery(string query, SqlParameter[]? parameters = null)
+        public DataTable ExecuteQuery(string query, SqlParameter[] parameters = null)
         {
             DataTable data = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionSTR))
@@ -36,7 +36,7 @@ namespace QuanLyRapChieuPhim.DAL
             return data;
         }
 
-        public int ExecuteNonQuery(string query, SqlParameter[]? parameters = null)
+        public int ExecuteNonQuery(string query, SqlParameter[] parameters = null)
         {
             int data = 0;
             using (SqlConnection connection = new SqlConnection(connectionSTR))
@@ -53,9 +53,9 @@ namespace QuanLyRapChieuPhim.DAL
             return data;
         }
 
-        public object? ExecuteScalar(string query, SqlParameter[]? parameters = null)
+        public object ExecuteScalar(string query, SqlParameter[] parameters = null)
         {
-            object? data = null;
+            object data = null;
             using (SqlConnection connection = new SqlConnection(connectionSTR))
             {
                 connection.Open();
