@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QuanLyRapChieuPhim.GUI
+namespace QuanLyRapChieuPhim.GUI.auth
 {
-    public partial class frmDangNhap : Form
+    public partial class frmQuenMatKhau : Form
     {
-        public frmDangNhap()
+        public frmQuenMatKhau()
         {
             InitializeComponent();
         }
