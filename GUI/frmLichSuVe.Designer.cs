@@ -119,7 +119,6 @@
             // 
             pictureBox1.BackColor = Color.Transparent;
             pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.Image = Properties.Resources.avatarmacdinh;
             pictureBox1.Location = new Point(37, 65);
             pictureBox1.Margin = new Padding(0);
             pictureBox1.Name = "pictureBox1";
