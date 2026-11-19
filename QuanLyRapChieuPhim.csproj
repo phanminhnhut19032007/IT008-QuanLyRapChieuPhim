@@ -12,6 +12,9 @@
     <Folder Include="DAL\" />
     <Folder Include="BUS\" />
     <Folder Include="DTO\" />
+    <Folder Include="GUI\Controls\" />
+    <Folder Include="GUI\Forms\Common\" />
+    <Folder Include="GUI\Forms\Admin\" />
   </ItemGroup>
 
 </Project>
