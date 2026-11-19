@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 namespace Cinema.Controls
 {
@@ -13,22 +11,80 @@ namespace Cinema.Controls
         public int BorderRadius { get; set; } = 18;
         public Color BorderColor { get; set; } = Color.LightGray;
 
+        private string _placeholder = "🔍 Tìm kiếm phim, rạp...";
+        private bool _isPlaceholderActive = true;
+
+        public string Placeholder
+        {
+            get => _placeholder;
+            set
+            {
+                _placeholder = value;
+                if (_isPlaceholderActive)
+                {
+                    InnerTextBox.Text = _placeholder;
+                }
+            }
+        }
+
+        // Thuộc tính lấy nội dung tìm kiếm thực sự (trả về chuỗi rỗng nếu đang hiện chữ gợi ý)
+        public string SearchText => _isPlaceholderActive ? string.Empty : InnerTextBox.Text.Trim();
+
         public RoundedSearchBox()
         {
             DoubleBuffered = true;
             BackColor = Color.White;
-            Padding = new Padding(14, 8, 14, 8); // Tạo khoảng trống 2 đầu để chữ không chạm góc bo
+            Padding = new Padding(14, 11, 14, 8);
 
             InnerTextBox.BorderStyle = BorderStyle.None;
             InnerTextBox.BackColor = Color.White;
             InnerTextBox.Font = new Font("Segoe UI", 10.5f);
             InnerTextBox.Dock = DockStyle.Fill;
-            InnerTextBox.PlaceholderText = "🔍 Tìm kiếm phim, rạp..."; // Hỗ trợ sẵn trong .NET 6/8+
+
+            // Hiển thị chữ gợi ý màu xám ngay từ đầu
+            SetPlaceholderState();
+
+            // Khi người dùng bấm chuột vào để gõ -> xóa chữ gợi ý, đổi sang chữ đen
+            InnerTextBox.Enter += (s, e) =>
+            {
+                if (_isPlaceholderActive)
+                {
+                    _isPlaceholderActive = false;
+                    InnerTextBox.Text = "";
+                    InnerTextBox.ForeColor = Color.FromArgb(30, 35, 50);
+                }
+            };
+
+            // Khi người dùng rời chuột ra mà chưa gõ gì -> hiện lại chữ gợi ý màu xám
+            InnerTextBox.Leave += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(InnerTextBox.Text))
+                {
+                    SetPlaceholderState();
+                }
+            };
 
             Controls.Add(InnerTextBox);
 
-            // Click vào vùng viền xung quanh vẫn tự động focus vào ô nhập chữ
+            // Bấm vào vùng viền trắng xung quanh vẫn focus vào TextBox
             Click += (s, e) => InnerTextBox.Focus();
+        }
+
+        private void SetPlaceholderState()
+        {
+            _isPlaceholderActive = true;
+            InnerTextBox.Text = _placeholder;
+            InnerTextBox.ForeColor = Color.Gray;
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (Width > 0 && Height > 0)
+            {
+                using var regionPath = GetRoundPath(new Rectangle(0, 0, Width, Height), BorderRadius);
+                Region = new Region(regionPath);
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -38,7 +94,6 @@ namespace Cinema.Controls
 
             var rect = new Rectangle(0, 0, Width - 1, Height - 1);
             using var path = GetRoundPath(rect, BorderRadius);
-            Region = new Region(GetRoundPath(new Rectangle(0, 0, Width, Height), BorderRadius));
 
             using var brush = new SolidBrush(BackColor);
             e.Graphics.FillPath(brush, path);

@@ -20,7 +20,7 @@ namespace Cinema.Controls
         };
         Panel line = new Panel
         {
-            Bounds = new Rectangle(0,100, 1080, 1),
+            Bounds = new Rectangle(90 ,100, 1080, 1),
             BackColor = Color.FromArgb(220, 224, 230) // Xám vừa đủ rõ trên nền trắng
         };
         LinkLabel lnkDangNhap = new LinkLabel()
@@ -43,10 +43,11 @@ namespace Cinema.Controls
         };
         public Header()
         {
-            Size = new Size(1280, 150);
-            Dock = DockStyle.Top;
-            BackColor = Theme.Navy;
-            var pnlTop = new Panel { Bounds = new Rectangle(0, 0, 1080, 99), BackColor = Theme.RedPrimary };
+
+            Bounds = new Rectangle(90, 0, 1080, 99); 
+            DoubleBuffered = true;
+
+            var pnlTop = new Panel { Bounds = new Rectangle(0, 0, 1080, 99) };
             Control  logo;
             string logoPath = ImageHelper.ResPath("logo.jpg");
             if (File.Exists(logoPath)){
@@ -72,7 +73,8 @@ namespace Cinema.Controls
             if (File.Exists(bgPath))
             {
                 pnlTop.BackgroundImage = Image.FromFile(bgPath);
-               
+                pnlTop.BackgroundImageLayout = ImageLayout.Stretch;
+
             }
             string DangNhapPath = ImageHelper.ResPath("login2.png");
             if (File.Exists(DangNhapPath))
@@ -92,6 +94,7 @@ namespace Cinema.Controls
             pnlTop.Controls.Add(lnkDangNhap);
             this.Controls.Add(pnlTop);
             this.Controls.Add(line);
+
         }   
 
     }

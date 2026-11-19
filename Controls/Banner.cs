@@ -10,13 +10,13 @@ namespace Cinema.Controls
     {
         public CinemaBanner(string title, string imageFileName)
         {
-            Size = new Size(1080, 250);
+            Size = new Size(1080,200 );
             Margin = Padding.Empty;
             DoubleBuffered = true;
 
             var picBanner = new PictureBox
             {
-                Bounds = new Rectangle(0, 0, 1080, 180),
+                Bounds = new Rectangle(0, 0, 1100, 180),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackColor = Color.FromArgb(20, 24, 40)
             };
@@ -33,7 +33,7 @@ namespace Cinema.Controls
                 Location = new Point(450, 42),
                 AutoSize = true,
                 ForeColor = Color.White,
-                BackColor = Color.Transparent,
+                BackColor = Color.Black,
                 Font = new Font("Impact", 28f, FontStyle.Regular), // Font Impact hoặc Bahnschrift Condensed rất giống mẫu
                 TextAlign = ContentAlignment.MiddleLeft
             };
