@@ -22,6 +22,8 @@ CREATE TABLE KhachHang (
     DiemTichLuy INT NOT NULL DEFAULT 0 CHECK (DiemTichLuy >= 0),
     TenDangNhap VARCHAR(50) UNIQUE FOREIGN KEY REFERENCES TaiKhoan(TenDangNhap) ON DELETE CASCADE
 );
+ALTER TABLE KhachHang 
+ADD TrangThai BIT NOT NULL DEFAULT 1; -- 1: Hoạt động, 0: Đã xóa
 
 -- 3. Bảng Thể loại phim
 CREATE TABLE TheLoai (
@@ -127,3 +129,5 @@ INSERT INTO TaiKhoan (TenDangNhap, MatKhauHash, Quyen, TrangThai) VALUES
 INSERT INTO KhachHang (HoTen, SoDienThoai, Email, DiemTichLuy, TenDangNhap) VALUES
 (N'Nguyễn Văn Khách', '0901234567', 'khach1@gmail.com', 100, 'khachhang1');
 GO
+
+
