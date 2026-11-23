@@ -133,7 +133,38 @@ namespace QuanLyRapChieuPhim.DAL
                }
               }
            }
-       }
+        // Kiểm tra Tên đăng nhập có khớp với SĐT hoặc Email trong bảng KhachHang không
+        public bool KiemTraThongTinKhoiPhuc(string tenDangNhap, string sdtHoacEmail)
+        {
+            string query = @"
+        SELECT COUNT(*) 
+        FROM TaiKhoan tk
+        INNER JOIN KhachHang kh ON tk.TenDangNhap = kh.TenDangNhap
+        WHERE tk.TenDangNhap = @TenDangNhap 
+          AND (kh.SoDienThoai = @ThongTin OR kh.Email = @ThongTin)
+          AND tk.TrangThai = 1";
+
+            SqlParameter[] parameters = {
+        new SqlParameter("@TenDangNhap", tenDangNhap),
+        new SqlParameter("@ThongTin", sdtHoacEmail)
+    };
+
+            object result = DataProvider.Instance.ExecuteScalar(query, parameters);
+            return result != null && Convert.ToInt32(result) > 0;
+        }
+
+        // Cập nhật mật khẩu mới đã băm SHA-256
+        public bool CapNhatMatKhauMoi(string tenDangNhap, string matKhauMoiHash)
+        {
+            string query = "UPDATE TaiKhoan SET MatKhauHash = @MatKhauHash WHERE TenDangNhap = @TenDangNhap";
+            SqlParameter[] parameters = {
+        new SqlParameter("@MatKhauHash", matKhauMoiHash),
+        new SqlParameter("@TenDangNhap", tenDangNhap)
+    };
+
+            return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
+        }
+    }
 
 
     }
