@@ -1,7 +1,8 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using QuanLyRapChieuPhim.DAL;
+﻿using QuanLyRapChieuPhim.DAL;
 using QuanLyRapChieuPhim.DTO;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace QuanLyRapChieuPhim.BUS
 {
@@ -63,6 +64,50 @@ namespace QuanLyRapChieuPhim.BUS
             }
 
             return (true, "Đăng nhập thành công!", tk);
+        }
+        public (bool thanhCong, string thongBao) XuLyDangKy(string hoTen, string soDienThoai,
+    string email, string tenDangNhap, string matKhau, string nhapLaiMatKhau)
+        {
+            hoTen = hoTen?.Trim() ?? "";
+            soDienThoai = soDienThoai?.Trim() ?? "";
+            email = email?.Trim() ?? "";
+            tenDangNhap = tenDangNhap?.Trim() ?? "";
+
+            if (hoTen == "" || soDienThoai == "" || tenDangNhap == "" || string.IsNullOrEmpty(matKhau))
+                return (false, "Vui lòng nhập đầy đủ các thông tin bắt buộc!");
+
+            if (!Regex.IsMatch(soDienThoai, @"^0\d{9,10}$"))
+                return (false, "Số điện thoại phải gồm 10-11 chữ số và bắt đầu bằng 0!");
+
+            if (email != "" && !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                return (false, "Email không hợp lệ!");
+
+            if (!Regex.IsMatch(tenDangNhap, @"^[a-zA-Z0-9_]{4,50}$"))
+                return (false, "Tên đăng nhập 4-50 ký tự, chỉ gồm chữ, số và dấu gạch dưới!");
+
+            if (matKhau.Length < 6)
+                return (false, "Mật khẩu phải có ít nhất 6 ký tự!");
+
+            if (matKhau != nhapLaiMatKhau)
+                return (false, "Mật khẩu nhập lại không khớp!");
+
+            try
+            {
+                if (TaiKhoanDAL.Instance.KiemTraTenDangNhapTonTai(tenDangNhap))
+                    return (false, "Tên đăng nhập đã tồn tại!");
+
+                if (TaiKhoanDAL.Instance.KiemTraSoDienThoaiTonTai(soDienThoai))
+                    return (false, "Số điện thoại đã được đăng ký!");
+
+                bool ok = TaiKhoanDAL.Instance.DangKyTaiKhoan(
+                    tenDangNhap, BamMatKhau(matKhau), hoTen, soDienThoai, email);
+
+                return ok ? (true, "Đăng ký thành công!") : (false, "Đăng ký thất bại, vui lòng thử lại!");
+            }
+            catch (Exception ex)
+            {
+                return (false, "Lỗi hệ thống: " + ex.Message);
+            }
         }
     }
 }

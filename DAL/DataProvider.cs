@@ -17,7 +17,10 @@ namespace QuanLyRapChieuPhim.DAL
         private readonly string connectionSTR = ConfigurationManager.ConnectionStrings["CinemaDBConnection"].ConnectionString;
 
         private DataProvider() { }
-
+        public string GetConnectionString()
+        {
+            return connectionSTR;
+        }
         public DataTable ExecuteQuery(string query, SqlParameter[] parameters = null)
         {
             DataTable data = new DataTable();

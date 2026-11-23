@@ -24,18 +24,18 @@ namespace QuanLyRapChieuPhim.GUI
             //  Bo góc panel đăng nhập chính
             if (pblDangNhap != null)
             {
-                pblDangNhap.Resize += (s, e) => UIUX.BoGocControl(pblDangNhap, 24);
-                UIUX.BoGocControl(pblDangNhap, 24);
+                pblDangNhap.Resize += (s, e) => effuiux.BoGocControl(pblDangNhap, 24);
+                effuiux.BoGocControl(pblDangNhap, 24);
             }
 
             // Cắt tròn khung PictureBox chứa GIF và vẽ viền đỏ
             if (picGif != null)
             {
                 picGif.SizeMode = PictureBoxSizeMode.StretchImage;
-                UIUX.BoTronControl(picGif);
+                effuiux.BoTronControl(picGif);
                 picGif.Paint += (s, e) =>
                 {
-                    UIUX.VeVienTron(e.Graphics, picGif.Width, picGif.Height, Color.FromArgb(220, 53, 69), 2f);
+                    effuiux.VeVienTron(e.Graphics, picGif.Width, picGif.Height, Color.FromArgb(220, 53, 69), 2f);
                 };
             }
 
@@ -66,11 +66,11 @@ namespace QuanLyRapChieuPhim.GUI
                 }
 
                 // Gọi Tầng BUS băm SHA-256 và đối chiếu CSDL
-                var ketQua = TaiKhoanBUS.Instance.XuLyDangNhap(tenDangNhap, matKhau);
+                var (thanhCong, thongBao, tk) = TaiKhoanBUS.Instance.XuLyDangNhap(tenDangNhap, matKhau);
 
-                if (!ketQua.thanhCong)
+                if (!thanhCong)
                 {
-                    MessageBox.Show(ketQua.thongBao, "Đăng nhập thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(thongBao, "Đăng nhập thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     tb2.SelectAll();
                     tb2.Focus();
                     return;
@@ -92,14 +92,7 @@ namespace QuanLyRapChieuPhim.GUI
 
                 this.Hide();
 
-                if (Session.Quyen == "Admin")
-                {
-                    MessageBox.Show("Chuyển hướng vào màn hình Quản lý", "Admin Dashboard");
-                }
-                else
-                {
-                    MessageBox.Show($"Chuyển hướng vào màn hình Đặt vé (Mã khách hàng: {Session.MaKH})", "Khách hàng");
-                }
+            
 
                 // Reset phiên khi quay lại
                 Session.Clear();

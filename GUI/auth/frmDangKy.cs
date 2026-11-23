@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyRapChieuPhim.BUS;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,8 +23,8 @@ namespace QuanLyRapChieuPhim.GUI.auth
             //  Bo góc panel đăng ký chính
             if (pnlDangKy != null)
             {
-                pnlDangKy.Resize += (s, e) => UIUX.BoGocControl(pnlDangKy, 24);
-                UIUX.BoGocControl(pnlDangKy, 24);
+                pnlDangKy.Resize += (s, e) => effuiux.BoGocControl(pnlDangKy, 24);
+                effuiux.BoGocControl(pnlDangKy, 24);
             }
         }
 
@@ -34,9 +35,21 @@ namespace QuanLyRapChieuPhim.GUI.auth
 
         private void btnDangKy_Click(object sender, EventArgs e)
         {
+            var (thanhCong, thongBao) = TaiKhoanBUS.Instance.XuLyDangKy(
+                tbHoTen.Text, tbSoDienThoai.Text, tbEmail.Text,
+                tbTenTaiKhoan.Text, tbMatKhau.Text, tbNhapLaiMatKhau.Text);
 
+            if (thanhCong)
+            {
+                MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show(thongBao, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
-       
+
     }
 }
