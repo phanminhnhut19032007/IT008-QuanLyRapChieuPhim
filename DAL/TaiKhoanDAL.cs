@@ -83,8 +83,8 @@ namespace QuanLyRapChieuPhim.DAL
             string query = "SELECT COUNT(*) FROM KhachHang WHERE SoDienThoai = @SoDienThoai";
             SqlParameter[] parameters =
             {
-        new SqlParameter("@SoDienThoai", SqlDbType.VarChar, 15) { Value = soDienThoai }
-           };
+               new SqlParameter("@SoDienThoai", SqlDbType.VarChar, 15) { Value = soDienThoai }
+            };
             object result = DataProvider.Instance.ExecuteScalar(query, parameters);
             return result != null && result != DBNull.Value && Convert.ToInt32(result) > 0;
         }
@@ -137,17 +137,17 @@ namespace QuanLyRapChieuPhim.DAL
         public bool KiemTraThongTinKhoiPhuc(string tenDangNhap, string sdtHoacEmail)
         {
             string query = @"
-        SELECT COUNT(*) 
-        FROM TaiKhoan tk
-        INNER JOIN KhachHang kh ON tk.TenDangNhap = kh.TenDangNhap
-        WHERE tk.TenDangNhap = @TenDangNhap 
-          AND (kh.SoDienThoai = @ThongTin OR kh.Email = @ThongTin)
-          AND tk.TrangThai = 1";
+                              SELECT COUNT(*) 
+                              FROM TaiKhoan tk
+                              INNER JOIN KhachHang kh ON tk.TenDangNhap = kh.TenDangNhap
+                              WHERE tk.TenDangNhap = @TenDangNhap 
+                              AND (kh.SoDienThoai = @ThongTin OR kh.Email = @ThongTin)
+                              AND tk.TrangThai = 1";
 
             SqlParameter[] parameters = {
-        new SqlParameter("@TenDangNhap", tenDangNhap),
-        new SqlParameter("@ThongTin", sdtHoacEmail)
-    };
+              new SqlParameter("@TenDangNhap", tenDangNhap),
+              new SqlParameter("@ThongTin", sdtHoacEmail)
+            };
 
             object result = DataProvider.Instance.ExecuteScalar(query, parameters);
             return result != null && Convert.ToInt32(result) > 0;
@@ -158,9 +158,9 @@ namespace QuanLyRapChieuPhim.DAL
         {
             string query = "UPDATE TaiKhoan SET MatKhauHash = @MatKhauHash WHERE TenDangNhap = @TenDangNhap";
             SqlParameter[] parameters = {
-        new SqlParameter("@MatKhauHash", matKhauMoiHash),
-        new SqlParameter("@TenDangNhap", tenDangNhap)
-    };
+             new SqlParameter("@MatKhauHash", matKhauMoiHash),
+             new SqlParameter("@TenDangNhap", tenDangNhap)
+        };
 
             return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
         }

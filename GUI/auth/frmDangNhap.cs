@@ -38,7 +38,26 @@ namespace QuanLyRapChieuPhim.GUI
                     effuiux.VeVienTron(e.Graphics, picGif.Width, picGif.Height, Color.FromArgb(220, 53, 69), 2f);
                 };
             }
-
+            if (tb1 != null)
+            {
+                tb1.Resize += (s, e) => effuiux.BoGocControl(tb1, 4);
+                effuiux.BoGocControl(tb1, 4);
+            }
+            if (tb2 != null)
+            {
+                tb2.Resize += (s, e) => effuiux.BoGocControl(tb2, 4);
+                effuiux.BoGocControl(tb2, 4);
+            }
+            if(btnDangNhap != null)
+            {
+                btnDangNhap.Resize += (s, e) => effuiux.BoGocControl(btnDangNhap, 18);
+                effuiux.BoGocControl(btnDangNhap, 18);
+            }
+            if(btnHuy != null)
+            {
+                btnHuy.Resize += (s, e) => effuiux.BoGocControl(btnHuy, 18);
+                effuiux.BoGocControl(btnHuy, 18);
+            }
 
 
         }
@@ -92,7 +111,7 @@ namespace QuanLyRapChieuPhim.GUI
 
                 this.Hide();
 
-            
+
 
                 // Reset phiên khi quay lại
                 Session.Clear();
@@ -116,8 +135,8 @@ namespace QuanLyRapChieuPhim.GUI
             }
         }
 
-        
-     private void llbTaoTaiKhoan_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+
+        private void llbTaoTaiKhoan_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.Hide(); // Ẩn tạm form Đăng nhập
             using (frmDangKy frm = new frmDangKy())
@@ -126,6 +145,17 @@ namespace QuanLyRapChieuPhim.GUI
             }
             this.Show(); // Tự động hiện lại form Đăng nhập khi form Đăng ký đóng
         }
-    
+
+      
+
+        private void llbQuenMatKhau_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.Hide(); // Ẩn tạm form Đăng nhập
+            using (frmDoiMatKhau frm = new frmDoiMatKhau())
+            {
+                frm.ShowDialog(); // Mở form Đổi mật khẩu và chờ người dùng thao tác xong
+            }
+            this.Show(); // Tự động hiện lại form Đăng nhập khi form Đổi mật khẩu đóng
+        }
     }
 }

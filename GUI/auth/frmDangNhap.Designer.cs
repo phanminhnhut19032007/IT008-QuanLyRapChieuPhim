@@ -117,6 +117,7 @@
             llbQuenMatKhau.TabIndex = 8;
             llbQuenMatKhau.TabStop = true;
             llbQuenMatKhau.Text = "Quên mật khẩu";
+            llbQuenMatKhau.LinkClicked += llbQuenMatKhau_LinkClicked;
             // 
             // llbTaoTaiKhoan
             // 

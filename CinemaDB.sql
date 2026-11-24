@@ -130,4 +130,3 @@ INSERT INTO KhachHang (HoTen, SoDienThoai, Email, DiemTichLuy, TenDangNhap) VALU
 (N'Nguyễn Văn Khách', '0901234567', 'khach1@gmail.com', 100, 'khachhang1');
 GO
 
-
