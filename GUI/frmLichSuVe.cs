@@ -1,215 +1,192 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using QuanLyRapChieuPhim.Properties;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
-using QuanLyRapChieuPhim.DTO;
 
 namespace QuanLyRapChieuPhim.GUI
 {
     public partial class frmLichSuVe : Form
     {
-        private readonly string tenDangNhap = string.Empty;
-        private readonly List<DailyTicketSummary> dailyTicketSummaries = new()
-        {
-            new(new DateTime(2025, 12, 10), new List<Ve>
-            {
-                new() { MaVe = 1, TenPhim = "Avatar: The Way of Water", MaGhe = 12, ThoiGianBatDau = new DateTime(2025, 12, 10, 19, 30, 0), GiaVe = 120000 },
-                new() { MaVe = 2, TenPhim = "Dune: Part Two", MaGhe = 15, ThoiGianBatDau = new DateTime(2025, 12, 10, 21, 0, 0), GiaVe = 95000 }
-            }),
-            new(new DateTime(2025, 12, 11), new List<Ve>
-            {
-                new() { MaVe = 3, TenPhim = "How to Train Your Dragon", MaGhe = 8, ThoiGianBatDau = new DateTime(2025, 12, 11, 18, 15, 0), GiaVe = 110000 },
-                new() { MaVe = 4, TenPhim = "Avatar: The Way of Water", MaGhe = 20, ThoiGianBatDau = new DateTime(2025, 12, 11, 20, 0, 0), GiaVe = 120000 }
-            }),
-            new(new DateTime(2025, 12, 12), new List<Ve>
-            {
-                new() { MaVe = 5, TenPhim = "Dune: Part Two", MaGhe = 4, ThoiGianBatDau = new DateTime(2025, 12, 12, 17, 0, 0), GiaVe = 95000 }
-            })
-        };
-
+        // Biến lưu phần trăm tiến độ (từ 0.0f đến 1.0f)
+        private float tyLeDiem = 0f;
         public frmLichSuVe()
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
+
+            // Bật DoubleBuffered cho tất cả Panel và TableLayoutPanel để chống nhấp nháy
+            BatDoubleBuffer(tableLayoutPanel1);
+            BatDoubleBuffer(panel1);
+            BatDoubleBuffer(panel2);
+            BatDoubleBuffer(panel5);
+            BatDoubleBuffer(panel6);
+            CapNhatTichDiem(3800); // Ví dụ: cập nhật điểm hiện tại là 
         }
 
-        public frmLichSuVe(string tenDangNhap) : this()
+        private void BatDoubleBuffer(Control ctrl)
         {
-            this.tenDangNhap = tenDangNhap;
-        }
-
-
-
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-            PictureBox avatar = (PictureBox)sender;
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-            const int borderWidth = 2;
-            int diameter = Math.Min(avatar.ClientSize.Width, avatar.ClientSize.Height) - borderWidth * 2;
-            if (diameter <= 0)
-            {
-                return;
-            }
-
-            int x = (avatar.ClientSize.Width - diameter) / 2;
-            int y = (avatar.ClientSize.Height - diameter) / 2;
-            Rectangle bounds = new Rectangle(x, y, diameter, diameter);
-
-            using GraphicsPath circlePath = new GraphicsPath();
-            circlePath.AddEllipse(bounds);
-            avatar.Region = new Region(circlePath);
-
-            using Pen pen = new Pen(Color.FromArgb(200, 200, 200), borderWidth);
-            e.Graphics.DrawEllipse(pen, bounds);
+            typeof(Control).InvokeMember("DoubleBuffered",
+                BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                null, ctrl, new object[] { true });
         }
 
         private void frmLichSuVe_Load(object sender, EventArgs e)
         {
-            ConfigureTicketDetailsGrid();
-            LoadCustomerProfile();
-            ConfigureTicketChart();
+            ChonTabMenu(label5); // Mặc định chọn tab "Thông tin cá nhân"
         }
 
-        private void LoadCustomerProfile()
+        private void panel2_Paint(object sender, PaintEventArgs e)
         {
-            txtHoTen.Text = "Chưa cập nhật";
-            txtNgaySinh.Text = "Chưa cập nhật";
-            txtEmail.Text = "Chưa cập nhật";
-            txtSoDienThoai.Text = "Chưa cập nhật";
-            label11.Text = "0";
-            label13.Text = "Chưa cập nhật";
-            label1.Text = "Chưa cập nhật";
+            if (panel2.ClientRectangle.Width == 0 || panel2.ClientRectangle.Height == 0) return;
 
-        }
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            int r = 14;
+            int d = r * 2;
+            Rectangle rect = panel2.ClientRectangle;
 
-        private void button1_Click(object? sender, EventArgs e)
-        {
-            if (txtHoTen.ReadOnly)
+            using (GraphicsPath path = new GraphicsPath())
             {
-                txtHoTen.ReadOnly = false;
-                txtEmail.ReadOnly = false;
-                txtSoDienThoai.ReadOnly = false;
-                button1.Text = "Lưu thông tin";
-                txtHoTen.Focus();
-                return;
-            }
+                path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+                path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+                path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+                path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+                path.CloseFigure();
 
-            if (string.IsNullOrWhiteSpace(txtHoTen.Text) ||
-                string.IsNullOrWhiteSpace(txtSoDienThoai.Text))
-            {
-                MessageBox.Show("Họ tên và số điện thoại không được để trống.", "Thông tin cá nhân", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+                // Chỉ cập nhật Region khi kích thước thay đổi để tránh kích hoạt vẽ lại liên tục
+                if (panel2.Region == null)
+                    panel2.Region = new Region(path);
 
-            label1.Text = txtHoTen.Text.Trim();
-            txtHoTen.ReadOnly = true;
-            txtEmail.ReadOnly = true;
-            txtSoDienThoai.ReadOnly = true;
-            button1.Text = "Chỉnh sửa";
-            MessageBox.Show("Thông tin đã được cập nhật trong phiên hiện tại.", "Thông tin cá nhân", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void frmLichSuVe_Resize(object sender, EventArgs e)
-        {
-            pictureBox1.Invalidate();
-        }
-
-        private void tableLayoutPanel2_Click(object? sender, EventArgs e)
-        {
-            using frmDoiMauNen dialog = new frmDoiMauNen(tableLayoutPanel2.BackColor);
-            if (dialog.ShowDialog(this) == DialogResult.OK)
-            {
-                tableLayoutPanel2.BackColor = dialog.SelectedColor;
+                using (LinearGradientBrush brush = new LinearGradientBrush(
+                    rect,
+                    Color.FromArgb(118, 62, 160),
+                    Color.FromArgb(52, 86, 175),
+                    45F))
+                {
+                    e.Graphics.FillPath(brush, path);
+                }
             }
         }
 
-        private void ConfigureTicketChart()
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            Series series = chart1.Series[0];
-            series.ChartType = SeriesChartType.Column;
-            series.Name = "Số vé";
-            series.IsValueShownAsLabel = true;
-            series["PointWidth"] = "0.2";
-            series.XValueType = ChartValueType.Date;
-            series.YValueType = ChartValueType.Int32;
-            series.Points.Clear();
+            Rectangle rect = new Rectangle(0, 0, panel1.Width, panel1.Height);
+            if (rect.Width == 0 || rect.Height == 0) return;
 
-            ChartArea chartArea = chart1.ChartAreas[0];
-            chartArea.AxisX.LabelStyle.Format = "dd/MM/yyyy";
-            chartArea.AxisX.LabelStyle.Angle = -45;
-            chartArea.AxisX.IntervalType = DateTimeIntervalType.Days;
-            chart1.ChartAreas[0].AxisX.Interval = 1;
-            chartArea.AxisX.IsMarginVisible = true;
-            chartArea.AxisY.Minimum = 0;
-
-            foreach (DailyTicketSummary summary in dailyTicketSummaries)
+            using (LinearGradientBrush brush = new LinearGradientBrush(
+                rect,
+                Color.FromArgb(45, 22, 68),
+                Color.FromArgb(18, 30, 70),
+                45F))
             {
-                int pointIndex = series.Points.AddXY(summary.Date, summary.TotalTickets);
-                DataPoint point = series.Points[pointIndex];
-                point.ToolTip = $"{summary.Date:dd/MM/yyyy}: {summary.TotalTickets} vé";
+                // Chỉ tô lại đúng vùng vừa lộ ra khi cuộn (e.ClipRectangle) giúp mượt gấp nhiều lần
+                e.Graphics.FillRectangle(brush, e.ClipRectangle);
             }
         }
 
-        private void ConfigureTicketDetailsGrid()
+        private void panel1_Scroll(object sender, ScrollEventArgs e)
         {
-            dgvChiTietVe.AutoGenerateColumns = false;
-            dgvChiTietVe.AllowUserToAddRows = false;
-            dgvChiTietVe.AllowUserToDeleteRows = false;
-            dgvChiTietVe.ReadOnly = true;
-            dgvChiTietVe.RowHeadersVisible = false;
-            dgvChiTietVe.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvChiTietVe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvChiTietVe.Columns.Clear();
-            dgvChiTietVe.Columns.Add("MaVe", "Mã vé");
-            dgvChiTietVe.Columns.Add("TenPhim", "Tên phim");
-            dgvChiTietVe.Columns.Add("MaGhe", "Mã ghế");
-            dgvChiTietVe.Columns.Add("ThoiGianBatDau", "Thời gian bắt đầu");
-            dgvChiTietVe.Columns.Add("GiaVe", "Giá vé");
+            panel1.Invalidate();
         }
 
-        private void ShowTicketDetails(DailyTicketSummary summary)
+        private void panel2_Scroll(object sender, ScrollEventArgs e)
         {
-            dgvChiTietVe.Rows.Clear();
+            panel2.Invalidate();
+        }
 
-            foreach (Ve ticket in summary.Tickets)
+        private void panel7_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            Rectangle rect = panel7.ClientRectangle;
+            if (rect.Width <= 0 || rect.Height <= 0) return;
+
+            int r = rect.Height / 2; // Bo tròn 2 đầu dạng viên thuốc (pill shape)
+
+            // 1. Vẽ thanh nền màu xám xanh nhạt (#646E8C)
+            using (GraphicsPath bgPath = TaoDuongBoVienThuoc(rect, r))
+            using (SolidBrush bgBrush = new SolidBrush(Color.FromArgb(100, 110, 140)))
             {
-                dgvChiTietVe.Rows.Add(
-                    ticket.MaVe,
-                    ticket.TenPhim,
-                    ticket.MaGhe,
-                    ticket.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm"),
-                    ticket.GiaVe.ToString("N0"));
+                e.Graphics.FillPath(bgBrush, bgPath);
             }
 
-            dgvChiTietVe.Visible = true;
-            tableLayoutPanel8.SetColumnSpan(chart1, 1);
-        }
-
-        private void chart1_MouseClick(object sender, MouseEventArgs e)
-        {
-            HitTestResult hit = chart1.HitTest(e.X, e.Y);
-            if (hit.ChartElementType != ChartElementType.DataPoint ||
-                hit.PointIndex < 0 || hit.PointIndex >= dailyTicketSummaries.Count)
+            // 2. Vẽ phần điểm đã đạt màu vàng sáng (#F3EA28)
+            int fillWidth = (int)(rect.Width * tyLeDiem);
+            if (fillWidth >= rect.Height) // Chỉ vẽ khi đủ độ rộng bo tròn
             {
-                return;
+                Rectangle fillRect = new Rectangle(0, 0, fillWidth, rect.Height);
+                using (GraphicsPath fillPath = TaoDuongBoVienThuoc(fillRect, r))
+                using (SolidBrush fillBrush = new SolidBrush(Color.FromArgb(243, 234, 40)))
+                {
+                    e.Graphics.FillPath(fillBrush, fillPath);
+                }
             }
+        }
+        private GraphicsPath TaoDuongBoVienThuoc(Rectangle rect, int r)
+        {
+            GraphicsPath path = new GraphicsPath();
+            int d = r * 2;
+            path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+            path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+            path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+        private void CapNhatTichDiem(int diemHienTai)
+        {
+            int mocToiDa = 10000;
 
-            DailyTicketSummary summary = dailyTicketSummaries[hit.PointIndex];
-            ShowTicketDetails(summary);
+            // Rút gọn số lớn hơn 1000 thành dạng "k" (vd: 2500 -> "2.5k", 0 -> "0")
+            string chuoiDiem = diemHienTai >= 1000
+                ? $"{(diemHienTai / 1000.0):0.#}k"
+                : diemHienTai.ToString();
+
+            label3.Text = $"{chuoiDiem}";
+
+            // Cập nhật tỉ lệ cho thanh tiến trình
+            tyLeDiem = Math.Min(1.0f, (float)diemHienTai / mocToiDa);
+            panel7.Invalidate();
+        }
+        private void ChonTabMenu(Label lblDangChon)
+        {
+            Color mauVangSang = Color.FromArgb(243, 234, 40);
+            Color mauTrangThuong = Color.White;
+
+            // 1. Đưa cả 3 mục menu về màu trắng bình thường
+            label7.ForeColor = mauTrangThuong; // Thông tin cá nhân
+            label6.ForeColor = mauTrangThuong; // Thành viên
+            label5.ForeColor = mauTrangThuong; // Lịch sử mua hàng
+
+            // 2. Tô vàng sáng cả icon lẫn chữ của mục vừa bấm
+            lblDangChon.ForeColor = mauVangSang;
+
+            // 3. Căn giữa theo chiều dọc vạch vàng pnlIndicator với dòng đang chọn
+            panel8.Top = lblDangChon.Top + (lblDangChon.Height - panel8.Height) / 2;
+            panel8.Visible = true;
+        }
+        private void label5_Click(object sender, EventArgs e)
+        {
+            ChonTabMenu(label5);
+            label8.Text = "THÔNG TIN KHÁCH HÀNG";
+            panel5.Visible = true;
+            panel6.Visible = true;
+            dataGridView1.Visible = false;
         }
 
-
-
-        private sealed record DailyTicketSummary(DateTime Date, List<Ve> Tickets)
+        private void label6_Click(object sender, EventArgs e)
         {
-            public int TotalTickets => Tickets.Count;
+            ChonTabMenu(label6);
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+            ChonTabMenu(label7);
+            label8.Text = "LỊCH SỬ MUA HÀNG";
+            panel5.Visible = false;
+            panel6.Visible = false;
+            dataGridView1.Visible = true;
+ 
         }
     }
 }
