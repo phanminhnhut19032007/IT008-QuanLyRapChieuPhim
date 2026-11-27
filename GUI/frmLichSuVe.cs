@@ -186,7 +186,9 @@ namespace QuanLyRapChieuPhim.GUI
             panel5.Visible = false;
             panel6.Visible = false;
             dataGridView1.Visible = true;
- 
+
         }
+
+
     }
 }

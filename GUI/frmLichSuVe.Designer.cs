@@ -117,7 +117,6 @@
             panel1.Size = new Size(1256, 466);
             panel1.TabIndex = 0;
             panel1.Scroll += panel1_Scroll;
-            panel1.Paint += panel1_Paint;
             // 
             // dataGridView1
             // 
